@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.env
+*.log
+*.zip
+
+client/node_modules/
+client/dist/
+
+server/node_modules/
+server/.env
+
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

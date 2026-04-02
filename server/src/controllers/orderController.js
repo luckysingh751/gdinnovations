@@ -7,7 +7,7 @@ const createOrder = async (req, res) => {
     return res.status(400).json({ message: "Order items are required" })
   }
 
-  const productIds = items.map((item) => item.productId)
+  const productIds = items.map((item) => item.productId).filter(Boolean)
   const products = await Product.find({ _id: { $in: productIds }, isActive: true })
   const productsMap = new Map(products.map((p) => [String(p._id), p]))
 

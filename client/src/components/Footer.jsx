@@ -2,9 +2,10 @@ import { useSiteData } from "../context/SiteDataContext"
 
 function Footer() {
   const { content } = useSiteData()
+  const { theme } = content
 
   return (
-    <footer className="bg-slate-900 text-slate-200 py-10 mt-12">
+    <footer className="py-12 mt-12 border-t" style={{ backgroundColor: theme.footerBg, color: theme.footerText, borderColor: "rgba(214,226,239,0.08)" }}>
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-6 text-sm">
         <div>
           <p className="font-semibold text-white mb-2">{content.site.brandName}</p>
@@ -19,7 +20,7 @@ function Footer() {
           <p>{content.footer.notice}</p>
         </div>
       </div>
-      <p className="text-center text-xs text-slate-400 mt-8">{content.footer.copyright}</p>
+      <p className="text-center text-xs text-slate-500 mt-8">{content.footer.copyright}</p>
     </footer>
   )
 }

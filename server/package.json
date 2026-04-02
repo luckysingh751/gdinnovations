@@ -4,9 +4,10 @@
   "description": "Backend API for GD Innovations pharmacy e-commerce",
   "main": "src/server.js",
   "scripts": {
-    "dev": "nodemon src/server.js",
+    "dev": "node src/server.js",
     "start": "node src/server.js",
-    "seed": "node src/scripts/seed.js"
+    "seed": "node src/scripts/seed.js",
+    "seed:products": "node src/scripts/seedMoreProducts.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -20,8 +21,5 @@
     "mongoose": "^8.9.5",
     "morgan": "^1.10.0",
     "stripe": "^17.5.0"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.9"
   }
 }

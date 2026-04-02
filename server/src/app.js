@@ -9,6 +9,7 @@ const productRoutes = require("./routes/productRoutes")
 const orderRoutes = require("./routes/orderRoutes")
 const paymentRoutes = require("./routes/paymentRoutes")
 const contentRoutes = require("./routes/contentRoutes")
+const programRoutes = require("./routes/programRoutes")
 const { notFound, errorHandler } = require("./middleware/errorHandler")
 
 const app = express()
@@ -16,7 +17,12 @@ const app = express()
 app.use(helmet())
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    origin: [
+      process.env.CLIENT_URL || "http://localhost:5173",
+      "http://localhost:4173",
+      "http://127.0.0.1:4173",
+      "http://127.0.0.1:5173",
+    ],
     credentials: true,
   })
 )
@@ -40,6 +46,7 @@ app.use("/api/products", productRoutes)
 app.use("/api/orders", orderRoutes)
 app.use("/api/payments", paymentRoutes)
 app.use("/api/content", contentRoutes)
+app.use("/api/programs", programRoutes)
 
 app.use(notFound)
 app.use(errorHandler)

@@ -13,16 +13,32 @@ const programRoutes = require("./routes/programRoutes")
 const { notFound, errorHandler } = require("./middleware/errorHandler")
 
 const app = express()
+const defaultOrigins = [
+  "http://localhost:4173",
+  "http://127.0.0.1:4173",
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+]
+const envOrigins = (process.env.CLIENT_URL || "")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean)
+const allowedOrigins = [...new Set([...defaultOrigins, ...envOrigins])]
 
-app.use(helmet())
+app.set("trust proxy", 1)
+app.use(
+  helmet({
+    crossOriginResourcePolicy: false,
+  })
+)
 app.use(
   cors({
-    origin: [
-      process.env.CLIENT_URL || "http://localhost:5173",
-      "http://localhost:4173",
-      "http://127.0.0.1:4173",
-      "http://127.0.0.1:5173",
-    ],
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true)
+      }
+      return callback(new Error("CORS origin not allowed"))
+    },
     credentials: true,
   })
 )

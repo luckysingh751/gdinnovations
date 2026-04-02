@@ -2,6 +2,9 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const User = require("../models/User")
 
+const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+const normalizeText = (value = "") => value.trim().replace(/\s+/g, " ")
+
 const signToken = (userId) => {
   return jwt.sign({ userId }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN || "7d",
@@ -46,7 +49,20 @@ const register = async (req, res) => {
     return res.status(400).json({ message: "Name, email and password are required" })
   }
 
-  const existingUser = await User.findOne({ email: email.toLowerCase() })
+  const normalizedName = normalizeText(name)
+  const normalizedEmail = email.trim().toLowerCase()
+
+  if (normalizedName.length < 2 || normalizedName.length > 80) {
+    return res.status(400).json({ message: "Name must be between 2 and 80 characters" })
+  }
+  if (!isValidEmail(normalizedEmail)) {
+    return res.status(400).json({ message: "Please enter a valid email address" })
+  }
+  if (password.length < 8) {
+    return res.status(400).json({ message: "Password must be at least 8 characters" })
+  }
+
+  const existingUser = await User.findOne({ email: normalizedEmail })
   if (existingUser) {
     return res.status(409).json({ message: "Email already registered" })
   }
@@ -62,8 +78,8 @@ const register = async (req, res) => {
 
   const hashedPassword = await bcrypt.hash(password, 10)
   const user = await User.create({
-    name,
-    email: email.toLowerCase(),
+    name: normalizedName,
+    email: normalizedEmail,
     password: hashedPassword,
     referredBy: referrer?._id || null,
     referredByCode: referrer?.referralCode || "",
@@ -85,7 +101,12 @@ const login = async (req, res) => {
     return res.status(400).json({ message: "Email and password are required" })
   }
 
-  const user = await User.findOne({ email: email.toLowerCase() })
+  const normalizedEmail = email.trim().toLowerCase()
+  if (!isValidEmail(normalizedEmail)) {
+    return res.status(400).json({ message: "Please enter a valid email address" })
+  }
+
+  const user = await User.findOne({ email: normalizedEmail })
   if (!user) {
     return res.status(401).json({ message: "Invalid credentials" })
   }

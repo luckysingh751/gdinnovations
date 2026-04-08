@@ -34,14 +34,21 @@ app.use(
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (
+        !origin ||
+        allowedOrigins.includes(origin) ||
+        /^https:\/\/.*\.vercel\.app$/i.test(origin)
+      ) {
         return callback(null, true)
       }
       return callback(new Error("CORS origin not allowed"))
     },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 )
+app.options("*", cors())
 app.use(express.json({ limit: "1mb" }))
 app.use(morgan("dev"))
 app.use(

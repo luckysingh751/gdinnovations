@@ -284,8 +284,13 @@ export function SiteDataProvider({ children }) {
         setProducts(Array.isArray(productsData) && productsData.length > 0 ? productsData : defaultProducts)
         setContent(mergeContentWithDefaults(contentData))
       } catch {
-        setProducts(defaultProducts)
-        setContent(defaultContent)
+        if (import.meta.env.DEV) {
+          setProducts(defaultProducts)
+          setContent(defaultContent)
+        } else {
+          setProducts([])
+          setContent(defaultContent)
+        }
       } finally {
         setLoading(false)
       }

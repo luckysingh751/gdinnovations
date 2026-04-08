@@ -6,14 +6,22 @@ const API_BASE_URL =
 
 export async function apiRequest(path, options = {}) {
   const { headers: customHeaders = {}, ...restOptions } = options
+  let response
 
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    ...restOptions,
-    headers: {
-      "Content-Type": "application/json",
-      ...customHeaders,
-    },
-  })
+  try {
+    response = await fetch(`${API_BASE_URL}${path}`, {
+      ...restOptions,
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        ...customHeaders,
+      },
+    })
+  } catch (error) {
+    throw new Error(
+      "Unable to connect to the server. Please refresh the page and try again."
+    )
+  }
 
   const contentType = response.headers.get("content-type") || ""
   const data = contentType.includes("application/json")

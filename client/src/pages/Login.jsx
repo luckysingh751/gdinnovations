@@ -41,6 +41,8 @@ function Login() {
             <input
               type="email"
               placeholder="Enter your email"
+              required
+              autoComplete="email"
               className="w-full border p-3 rounded-xl text-white placeholder:text-slate-500"
               style={{ backgroundColor: "rgba(255,255,255,0.03)", borderColor: "rgba(214,226,239,0.14)" }}
               value={formData.email}
@@ -53,6 +55,8 @@ function Login() {
             <input
               type="password"
               placeholder="Enter your password"
+              required
+              autoComplete="current-password"
               className="w-full border p-3 rounded-xl text-white placeholder:text-slate-500"
               style={{ backgroundColor: "rgba(255,255,255,0.03)", borderColor: "rgba(214,226,239,0.14)" }}
               value={formData.password}
@@ -60,7 +64,11 @@ function Login() {
             />
           </div>
 
-          {error ? <p className="text-sm text-red-600">{error}</p> : null}
+          {error ? (
+            <p className="text-sm rounded-lg border border-red-500/30 bg-red-500/10 text-red-300 px-3 py-2">
+              {error}
+            </p>
+          ) : null}
 
           <button
             type="submit"

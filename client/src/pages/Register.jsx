@@ -34,12 +34,16 @@ function Register() {
         <h1 className="text-3xl font-bold text-center mb-6">Create Account</h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <input className="w-full border p-3 rounded-xl text-white placeholder:text-slate-500" style={{ backgroundColor: "rgba(255,255,255,0.03)", borderColor: "rgba(214,226,239,0.14)" }} placeholder="Full name" value={formData.name} onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))} />
-          <input className="w-full border p-3 rounded-xl text-white placeholder:text-slate-500" style={{ backgroundColor: "rgba(255,255,255,0.03)", borderColor: "rgba(214,226,239,0.14)" }} type="email" placeholder="Email" value={formData.email} onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))} />
-          <input className="w-full border p-3 rounded-xl text-white placeholder:text-slate-500" style={{ backgroundColor: "rgba(255,255,255,0.03)", borderColor: "rgba(214,226,239,0.14)" }} type="password" placeholder="Password" value={formData.password} onChange={(e) => setFormData((prev) => ({ ...prev, password: e.target.value }))} />
+          <input className="w-full border p-3 rounded-xl text-white placeholder:text-slate-500" style={{ backgroundColor: "rgba(255,255,255,0.03)", borderColor: "rgba(214,226,239,0.14)" }} placeholder="Full name" required autoComplete="name" value={formData.name} onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))} />
+          <input className="w-full border p-3 rounded-xl text-white placeholder:text-slate-500" style={{ backgroundColor: "rgba(255,255,255,0.03)", borderColor: "rgba(214,226,239,0.14)" }} type="email" required autoComplete="email" placeholder="Email" value={formData.email} onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))} />
+          <input className="w-full border p-3 rounded-xl text-white placeholder:text-slate-500" style={{ backgroundColor: "rgba(255,255,255,0.03)", borderColor: "rgba(214,226,239,0.14)" }} type="password" required minLength={8} autoComplete="new-password" placeholder="Password" value={formData.password} onChange={(e) => setFormData((prev) => ({ ...prev, password: e.target.value }))} />
           <input className="w-full border p-3 rounded-xl text-white placeholder:text-slate-500" style={{ backgroundColor: "rgba(255,255,255,0.03)", borderColor: "rgba(214,226,239,0.14)" }} placeholder="Referral code (optional)" value={formData.referralCode} onChange={(e) => setFormData((prev) => ({ ...prev, referralCode: e.target.value.toUpperCase() }))} />
-          {error ? <p className="text-sm text-red-600">{error}</p> : null}
-          <button disabled={loading} className="w-full py-3 rounded-xl disabled:opacity-60 font-semibold" style={{ backgroundColor: accentColor, color: "#08111f" }}>
+          {error ? (
+            <p className="text-sm rounded-lg border border-red-500/30 bg-red-500/10 text-red-300 px-3 py-2">
+              {error}
+            </p>
+          ) : null}
+          <button type="submit" disabled={loading} className="w-full py-3 rounded-xl disabled:opacity-60 font-semibold" style={{ backgroundColor: accentColor, color: "#08111f" }}>
             {loading ? "Creating..." : "Create Account"}
           </button>
         </form>
